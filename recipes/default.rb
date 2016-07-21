@@ -52,6 +52,10 @@ service 'fail2ban' do
   supports [status: true, restart: true]
   action [:enable, :start]
 
+  if platform?('ubuntu') && node['platform_version'].to_f >= 15.10
+    provider Chef::Provider::Service::Systemd
+  end
+
   if (platform?('ubuntu') && node['platform_version'].to_f < 12.04) ||
      (platform?('debian') && node['platform_version'].to_f < 7)
     # status command returns non-0 value only since fail2ban 0.8.6-3 (Debian)
