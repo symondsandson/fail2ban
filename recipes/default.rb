@@ -20,6 +20,10 @@
 # epel repository is needed for the fail2ban package on rhel
 include_recipe 'yum-epel' if platform_family?('rhel')
 
+package 'fail2ban' do
+  action :install
+end
+
 service 'fail2ban' do
   supports [status: true, restart: true]
   action [:start, :enable]
@@ -33,10 +37,6 @@ service 'fail2ban' do
     # status command returns non-0 value only since fail2ban 0.8.6-3 (Debian)
     status_command "/etc/init.d/fail2ban status | grep -q 'is running'"
   end
-end
-
-package 'fail2ban' do
-  action :install
 end
 
 node['fail2ban']['filters'].each do |name, options|
