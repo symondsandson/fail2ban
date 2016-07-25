@@ -53,7 +53,7 @@ service 'fail2ban' do
   action [:enable, :start]
 
   if platform?('ubuntu') && node['platform_version'].to_f >= 15.10
-    provider Chef::Provider::Service::Systemd
+    provider Chef::Provider::Service::Init::Systemd
   end
 
   if (platform?('ubuntu') && node['platform_version'].to_f < 12.04) ||
