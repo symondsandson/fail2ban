@@ -22,7 +22,7 @@ include_recipe 'yum-epel' if platform_family?('rhel')
 
 service 'fail2ban' do
   supports [status: true, restart: true]
-  action :nothing
+  action [:start, :enable]
 
   if platform?('ubuntu') && node['platform_version'].to_f >= 15.10
     provider Chef::Provider::Service::Systemd
