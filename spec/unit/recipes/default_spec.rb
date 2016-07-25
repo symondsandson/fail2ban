@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'fail2ban::default converge' do
   let(:chef_run) do
     runner = ChefSpec::ServerRunner.new
-    runner.node.set['fail2ban']['filters'] = {
+    runner.node.normal['fail2ban']['filters'] = {
       'nginx-proxy' => {
         'failregex' => ['^<HOST> -.*GET http.*'],
         'ignoreregex' => []
@@ -14,11 +14,6 @@ describe 'fail2ban::default converge' do
 
   it 'installs the fail2ban package' do
     expect(chef_run).to install_package('fail2ban')
-  end
-
-  it 'should start and enable service fail2ban' do
-    expect(chef_run).to start_service('fail2ban')
-    expect(chef_run).to enable_service('fail2ban')
   end
 
   it 'should template fail2ban.conf' do
