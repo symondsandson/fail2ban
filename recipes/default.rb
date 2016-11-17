@@ -47,6 +47,10 @@ node['fail2ban']['filters'].each do |name, options|
   end
 end
 
+file "/etc/fail2ban/jail.d/defaults-debian.conf" do
+  action :delete
+end
+
 template '/etc/fail2ban/fail2ban.conf' do
   source 'fail2ban.conf.erb'
   owner 'root'
