@@ -24,6 +24,21 @@ package 'fail2ban' do
   action :install
 end
 
+service 'fail2ban' do
+  supports [status: true, restart: true]
+  action [:start, :enable]
+
+  if platform?('ubuntu') && node['platform_version'].to_f >= 15.10
+    provider Chef::Provider::Service::Systemd
+  end
+
+  if (platform?('ubuntu') && node['platform_version'].to_f < 12.04) ||
+     (platform?('debian') && node['platform_version'].to_f < 7)
+    # status command returns non-0 value only since fail2ban 0.8.6-3 (Debian)
+    status_command "/etc/init.d/fail2ban status | grep -q 'is running'"
+  end
+end
+
 node['fail2ban']['filters'].each do |name, options|
   template "/etc/fail2ban/filter.d/#{name}.conf" do
     source 'filter.conf.erb'
@@ -46,15 +61,4 @@ template '/etc/fail2ban/jail.local' do
   group 'root'
   mode '0644'
   notifies :restart, 'service[fail2ban]'
-end
-
-service 'fail2ban' do
-  supports [status: true, restart: true]
-  action [:enable, :start]
-
-  if (platform?('ubuntu') && node['platform_version'].to_f < 12.04) ||
-     (platform?('debian') && node['platform_version'].to_f < 7)
-    # status command returns non-0 value only since fail2ban 0.8.6-3 (Debian)
-    status_command "/etc/init.d/fail2ban status | grep -q 'is running'"
-  end
 end
