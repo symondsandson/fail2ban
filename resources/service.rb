@@ -29,16 +29,16 @@ action :create do
       enabled: new_resource.enabled,
       actions: new_resource.actions,
       params: {
-        port: @port,
-        filter: @filter,
-        logpath: @logpath,
-        findtime: @findtime,
-        bantime: @bantime,
-        maxretry: @maxretry,
-        protocol: @protocol,
-        banaction: @banaction,
-        backend: @backend,
-        ignorecommand: @ignorecommand
+        port: new_resource.port,
+        filter: new_resource.filter,
+        logpath: new_resource.logpath,
+        findtime: new_resource.findtime,
+        bantime: new_resource.bantime,
+        maxretry: new_resource.maxretry,
+        protocol: new_resource.protocol,
+        banaction: new_resource.banaction,
+        backend: new_resource.backend,
+        ignorecommand: new_resource.ignorecommand
       }
     )
     notifies :restart, 'service[fail2ban]'
