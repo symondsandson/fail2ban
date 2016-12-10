@@ -5,8 +5,8 @@ resource_name :fail2ban_filter
 default_action :create
 
 property :name, name_attribute: true, required: true, kind_of: String
-property :fail_regex, kind_of: Array
-property :ignore_regex, kind_of: Array
+property :fail_regex, kind_of: Array, default: []
+property :ignore_regex, kind_of: Array, default: []
 
 action :create do
   include_recipe 'fail2ban::default'

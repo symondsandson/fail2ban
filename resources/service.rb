@@ -9,14 +9,14 @@ property :enabled, kind_of: String, default: 'true'
 property :actions, kind_of: String
 property :port, kind_of: String
 property :filter, kind_of: String
-property :findtime, kind_of: String
-property :bantime, kind_of: String
+property :findtime, kind_of: Integer
+property :bantime, kind_of: Integer
 property :banaction, kind_of: String
 property :protocol, kind_of: String
 property :backend, kind_of: String
 property :ignorecommand, kind_of: String
 property :logpath, kind_of: String
-property :maxretry, kind_of: String
+property :maxretry, kind_of: Integer
 
 action :create do
   include_recipe 'fail2ban::default'
