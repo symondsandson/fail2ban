@@ -40,10 +40,26 @@ service 'fail2ban' do
 end
 
 node['fail2ban']['filters'].each do |name, options|
-  template "/etc/fail2ban/filter.d/#{name}.conf" do
-    source 'filter.conf.erb'
-    variables(failregex: [options['failregex']].flatten, ignoreregex: [options['ignoreregex']].flatten)
-    notifies :restart, 'service[fail2ban]'
+  fail2ban_filter name do
+    fail_regex options['failregex']
+    ignore_regex options['ignoreregex']
+  end
+end
+
+node['fail2ban']['services'].each do |name, options|
+  fail2ban_service name do
+    enabled options['enabled']
+    port options['port']
+    filter options['filter']
+    findtime options['findtime']
+    bantime options['bantime']
+    banaction options['banaction']
+    protocol options['protocol']
+    backend options['backend']
+    ignorecommand options['ignorecommand']
+    actions options['actions']
+    logpath options['logpath']
+    maxretry options['maxretry']
   end
 end
 
