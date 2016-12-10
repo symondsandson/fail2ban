@@ -4,9 +4,8 @@
 
 enabled = <%= @enabled %>
 <% %w{ port filter logpath findtime bantime maxretry protocol banaction backend ignorecommand }.each do |key| %>
-<% if @params[key] %>
-<%=key%> = <%= @params[key] %>
-<% end %>
+<% next unless value = self.instance_variable_get("@#{key}".to_sym) %>
+<%= key %> = <%= value %>
 <% end %>
 <% if @actions %>
 <% if @actions =~ /action_/ %>
